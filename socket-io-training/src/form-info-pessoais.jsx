@@ -1,11 +1,25 @@
 import './index.css';
 import io from 'socket.io-client';
 import { useEffect, useState } from 'react';
+import moment from 'moment';
 
 const socket = io.connect('http://localhost:3001');
 
-function Form() {
-  const [form, setForm] = useState({});
+function FormInfoPessoais() {
+  const [form, setForm] = useState({
+    nome: null,
+    dataNascimento: null,
+    idade: null,
+    dataRegistro: new Date(),
+    cpf: null,
+    telefone: null,
+    estadoCivil: null,
+    sexo: null,
+    endereco: {
+      cep: null,
+      numero: null,
+    },
+  });
   const [messageReceived, setMessageReceived] = useState('');
 
   const handleInputChange = event => {
@@ -17,8 +31,34 @@ function Form() {
     }));
   };
 
+  const handleDataNascimentoChange = event => {
+    const { value } = event.target;
+    const idade = moment().diff(value, 'years');
+
+    setForm(prevForm => ({
+      ...prevForm,
+      idade: idade,
+      dataNascimento: value,
+    }));
+  };
+
+  const handleEnderecoChange = event => {
+    const { name, value } = event.target;
+
+    setForm(prevForm => ({
+      ...prevForm,
+      endereco: {
+        ...prevForm.endereco,
+        [name]: value,
+      },
+    }));
+  };
+
   const handleSubmit = () => {
-    console.log(form);
+    setForm(prevForm => ({
+      ...prevForm,
+      dataRegistro: new Date(),
+    }));
     socket.emit('send_message', form);
   };
 
@@ -31,10 +71,15 @@ function Form() {
   return (
     <>
       <div className='f-column g-16'>
-        {messageReceived.nome}
-        <div className='f-title'>
-          Informação pessoal
-          <div className='divider'></div>
+        <div className='f-column g-8 f-align-center'>
+          <div className='f-14 col-blue'>Informações pessoais</div>
+          <div className='f-row g-8'>
+            <div className='progress-status-bar ok'></div>
+            <div className='progress-status-bar'></div>
+            <div className='progress-status-bar'></div>
+            <div className='progress-status-bar'></div>
+            <div className='progress-status-bar'></div>
+          </div>
         </div>
         <div className='f-column'>
           <label htmlFor=''>Nome completo:</label>
@@ -43,12 +88,12 @@ function Form() {
         <div className='f-row g-16'>
           <div className='f-column flex-03'>
             <label htmlFor=''>Data de nascimento:</label>
-            <input placeholder='Insira seu nome...' type='date' onChange={handleInputChange} value={form.dataNascimento} name='dataNascimento' />
+            <input placeholder='Insira seu nome...' type='date' onChange={handleDataNascimentoChange} value={form.dataNascimento} name='dataNascimento' />
           </div>
 
           <div className='f-column'>
             <label htmlFor=''>CPF:</label>
-            <input placeholder='Insira seu CPF' value={form.cpf} name='cpf' />
+            <input placeholder='Insira seu CPF' value={form.cpf} name='cpf' onChange={handleInputChange} />
           </div>
         </div>
         <div className='f-row g-16'>
@@ -95,26 +140,26 @@ function Form() {
             </div>
           </div>
         </div>
-        {/* <div className='f-title'>
+        <div className='f-title'>
           Endereço
           <div className='divider'></div>
         </div>
         <div className='f-row g-16'>
           <div className='f-column'>
             <label htmlFor=''>CEP:</label>
-            <input value={form.endereco} placeholder='Insira seu CEP...' type='text' onChange={handleInputChange} name='cep' />
+            <input value={form.endereco.cep} placeholder='Insira seu CEP...' type='text' onChange={handleEnderecoChange} name='cep' />
           </div>
           <div className='f-column'>
             <label htmlFor=''>Estado:</label>
-            <select name='' id='' onChange={handleInputChange}>
-              <option value={form.endereco}>Selecione o estado</option>
+            <select name='estado' id='' onChange={handleEnderecoChange}>
+              <option value={form.endereco.estado}>Selecione o estado</option>
             </select>
           </div>
         </div>
         <div className='f-column'>
           <label htmlFor=''>Endereço:</label>
-          <input placeholder='Insira seu endereço...' onChange={handleInputChange} value={form.endereco} name='endereco'/>
-        </div> */}
+          <input placeholder='Insira seu endereço...' onChange={handleEnderecoChange} value={form.endereco.endereco} name='endereco' />
+        </div>
 
         <div className='f-row g-8 f-justify-center'>
           <button className='btn-default btn-ghost'>Voltar</button>
@@ -127,4 +172,4 @@ function Form() {
   );
 }
 
-export default Form;
+export default FormInfoPessoais;
