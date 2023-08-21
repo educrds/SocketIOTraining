@@ -1,11 +1,18 @@
-import './index.css';
+import '../index.css';
 import io from 'socket.io-client';
 import { useEffect, useState } from 'react';
 import moment from 'moment';
+import { useNavigate } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import { updatePatient } from '../redux';
 
 const socket = io.connect('http://localhost:3001');
 
 function FormInfoPessoais() {
+  const navigate = useNavigate();
+  // const initialForm = useSelector(state => state.patient);
+  const dispatch = useDispatch();
+
   const [form, setForm] = useState({
     nome: null,
     dataNascimento: null,
@@ -14,7 +21,7 @@ function FormInfoPessoais() {
     cpf: null,
     telefone: null,
     estadoCivil: null,
-    sexo: null,
+    genero: null,
     endereco: {
       cep: null,
       numero: null,
@@ -59,14 +66,18 @@ function FormInfoPessoais() {
       ...prevForm,
       dataRegistro: new Date(),
     }));
-    socket.emit('send_message', form);
+
+    dispatch(updatePatient(form));
+    navigate('/info-medicas');
+
+    // socket.emit('send_message', form);
   };
 
-  useEffect(() => {
-    socket.on('receive_message', data => {
-      setMessageReceived(data);
-    });
-  }, [socket]);
+  // useEffect(() => {
+  //   socket.on('receive_message', data => {
+  //     setMessageReceived(data);
+  //   });
+  // }, [socket]);
 
   return (
     <>
@@ -75,7 +86,6 @@ function FormInfoPessoais() {
           <div className='f-14 col-blue'>Informações pessoais</div>
           <div className='f-row g-8'>
             <div className='progress-status-bar ok'></div>
-            <div className='progress-status-bar'></div>
             <div className='progress-status-bar'></div>
             <div className='progress-status-bar'></div>
             <div className='progress-status-bar'></div>
@@ -121,19 +131,19 @@ function FormInfoPessoais() {
             <div className='f-row g-16'>
               <div className='f-row g-16'>
                 <div className='f-row g-4 f-align-center'>
-                  <input type='radio' name='sexo' id='' value={form.sexo} />
+                  <input type='radio' name='genero' id='' value={form.genero} />
                   <label htmlFor=''>Masculino</label>
                 </div>
               </div>
               <div className='f-row g-16'>
                 <div className='f-row g-4 f-align-center'>
-                  <input type='radio' name='sexo' id='' value={form.sexo} />
+                  <input type='radio' name='genero' id='' value={form.genero} />
                   <label htmlFor=''>Feminino</label>
                 </div>
               </div>
               <div className='f-row g-16'>
                 <div className='f-row g-4 f-align-center'>
-                  <input type='radio' name='sexo' id='' value={form.sexo} />
+                  <input type='radio' name='genero' id='' value={form.genero} />
                   <label htmlFor=''>Outros</label>
                 </div>
               </div>
@@ -164,6 +174,7 @@ function FormInfoPessoais() {
         <div className='f-row g-8 f-justify-center'>
           <button className='btn-default btn-ghost'>Voltar</button>
           <button className='btn-default btn-primary' onClick={handleSubmit}>
+            {/* <button className='btn-default btn-primary' onClick={() => navigate('/info-medicas')}> */}
             Próximo<i className='fa-solid fa-arrow-right'></i>
           </button>
         </div>
