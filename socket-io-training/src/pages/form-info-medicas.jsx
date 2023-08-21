@@ -1,8 +1,8 @@
 import '../index.css';
 import io from 'socket.io-client';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { updatePatient } from '../redux';
 
 const socket = io.connect('http://localhost:3001');
@@ -17,6 +17,8 @@ function FormInfoMedicas() {
       faltaAr: null,
       pressaoAlta: null,
       pressaoBaixa: null,
+      tratamentoRadioterapeutico: null,
+      tratamentoPsiquiatrico: null,
       quimioterapia: null,
       motivo: null,
     },
@@ -116,11 +118,11 @@ function FormInfoMedicas() {
             <span className='w-100'>Tratamento radioterápico:</span>
             <div className='f-row f-between'>
               <div className='f-row g-4 f-align-center f-justify-end'>
-                <input type='radio' value={true} name='' id='' />
+                <input type='radio' value={true} name='tratamentoRadioterapeutico' id='' onChange={handleInputChange} />
                 <label htmlFor=''>Sim</label>
               </div>
               <div className='f-row g-4 f-align-center f-justify-end'>
-                <input type='radio' value={false} name='' id='' />
+                <input type='radio' value={false} name='tratamentoRadioterapeutico' id='' onChange={handleInputChange} />
                 <label htmlFor=''>Não</label>
               </div>
             </div>
@@ -129,11 +131,11 @@ function FormInfoMedicas() {
             <span className='w-100'>Tratamento psiquiátrico:</span>
             <div className='f-row f-between'>
               <div className='f-row g-4 f-align-center f-justify-end'>
-                <input type='radio' value={true} name='' id='' />
+                <input type='radio' value={true} name='tratamentoPsiquiatrico' id='' onChange={handleInputChange} />
                 <label htmlFor=''>Sim</label>
               </div>
               <div className='f-row g-4 f-align-center f-justify-end'>
-                <input type='radio' value={false} name='' id='' />
+                <input type='radio' value={false} name='tratamentoPsiquiatrico' id='' onChange={handleInputChange} />
                 <label htmlFor=''>Não</label>
               </div>
             </div>

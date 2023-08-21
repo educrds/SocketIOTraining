@@ -1,19 +1,6 @@
 import { UPDATE_PATIENT } from './patientTypes';
 
-const initialState = {
-  nome: null,
-  dataNascimento: null,
-  idade: null,
-  dataRegistro: new Date(),
-  cpf: null,
-  telefone: null,
-  estadoCivil: null,
-  genero: null,
-  endereco: {
-    cep: null,
-    numero: null,
-  },
-};
+const initialState = {};
 
 // REDUCER
 const patientReducer = (state = initialState, action) => {
