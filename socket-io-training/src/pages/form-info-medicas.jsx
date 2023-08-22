@@ -1,31 +1,36 @@
 import '../index.css';
-import io from 'socket.io-client';
 import { useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
 import { updatePatient } from '../redux';
-
-const socket = io.connect('http://localhost:3001');
 
 function FormInfoMedicas() {
   const navigate = useNavigate();
+  const patientForm = useSelector(state => state.patient);
   const dispatch = useDispatch();
-
   const [form, setForm] = useState({
     fichaMedica: {
-      dorNoPeito: null,
-      faltaAr: null,
-      pressaoAlta: null,
-      pressaoBaixa: null,
-      tratamentoRadioterapeutico: null,
-      tratamentoPsiquiatrico: null,
-      quimioterapia: null,
-      motivo: null,
+      dorNoPeito: patientForm.fichaMedica?.dorNoPeito || null,
+      faltaAr: patientForm.fichaMedica?.faltaAr || null,
+      pressaoAlta: patientForm.fichaMedica?.pressaoAlta || null,
+      pressaoBaixa: patientForm.fichaMedica?.pressaoBaixa || null,
+      tratamentoRadioterapeutico: patientForm.fichaMedica?.tratamentoRadioterapeutico || null,
+      tratamentoPsiquiatrico: patientForm.fichaMedica?.tratamentoPsiquiatrico || null,
+      quimioterapia: patientForm.fichaMedica?.quimioterapia || null,
+      motivo: patientForm.fichaMedica?.motivo || null,
+      drogas: patientForm.fichaMedica?.drogas || null,
+      medicamentos: patientForm.fichaMedica?.medicamentos || null,
     },
   });
 
   const handleInputChange = event => {
-    const { name, value } = event.target;
+    let { name, value } = event.target;
+
+    if (value === 'true') {
+      value = true;
+    } else if (value === 'false') {
+      value = false;
+    }
 
     setForm(prevForm => ({
       ...prevForm,
@@ -40,7 +45,6 @@ function FormInfoMedicas() {
     dispatch(updatePatient(form));
     navigate('/termo-aceite');
   };
-  // socket.emit('send_message', form);
 
   return (
     <>
@@ -61,98 +65,13 @@ function FormInfoMedicas() {
             <div className='divider'></div>
           </div>
 
-          <div className='f-row'>
-            <span className='w-100'>Dor no peito:</span>
-            <div className='f-row f-between'>
-              <div className='f-row g-4 f-align-center f-justify-end'>
-                <input type='radio' value={true} name='dorNoPeito' onChange={handleInputChange} />
-                <label htmlFor=''>Sim</label>
-              </div>
-
-              <div className='f-row g-4 f-align-center f-justify-end'>
-                <input type='radio' value={false} name='dorNoPeito' onChange={handleInputChange} />
-                <label htmlFor=''>Não</label>
-              </div>
-            </div>
-          </div>
-          <div className='f-row'>
-            <span className='w-100'>Falta de ar:</span>
-            <div className='f-row f-between'>
-              <div className='f-row g-4 f-align-center f-justify-end'>
-                <input type='radio' value={true} name='faltaAr' onChange={handleInputChange} />
-                <label htmlFor=''>Sim</label>
-              </div>
-              <div className='f-row g-4 f-align-center f-justify-end'>
-                <input type='radio' value={false} name='faltaAr' onChange={handleInputChange} />
-                <label htmlFor=''>Não</label>
-              </div>
-            </div>
-          </div>
-          <div className='f-row'>
-            <span className='w-100'>Pressão alta:</span>
-            <div className='f-row f-between'>
-              <div className='f-row g-4 f-align-center f-justify-end'>
-                <input type='radio' value={true} name='pressaoAlta' onChange={handleInputChange} />
-                <label htmlFor=''>Sim</label>
-              </div>
-              <div className='f-row g-4 f-align-center f-justify-end'>
-                <input type='radio' value={false} name='pressaoAlta' onChange={handleInputChange} />
-                <label htmlFor=''>Não</label>
-              </div>
-            </div>
-          </div>
-          <div className='f-row'>
-            <span className='w-100'>Pressão baixa:</span>
-            <div className='f-row f-between'>
-              <div className='f-row g-4 f-align-center f-justify-end'>
-                <input type='radio' value={true} name='pressaoBaixa' onChange={handleInputChange} />
-                <label htmlFor=''>Sim</label>
-              </div>
-              <div className='f-row g-4 f-align-center f-justify-end'>
-                <input type='radio' value={false} name='pressaoBaixa' onChange={handleInputChange} />
-                <label htmlFor=''>Não</label>
-              </div>
-            </div>
-          </div>
-          <div className='f-row'>
-            <span className='w-100'>Tratamento radioterápico:</span>
-            <div className='f-row f-between'>
-              <div className='f-row g-4 f-align-center f-justify-end'>
-                <input type='radio' value={true} name='tratamentoRadioterapeutico' id='' onChange={handleInputChange} />
-                <label htmlFor=''>Sim</label>
-              </div>
-              <div className='f-row g-4 f-align-center f-justify-end'>
-                <input type='radio' value={false} name='tratamentoRadioterapeutico' id='' onChange={handleInputChange} />
-                <label htmlFor=''>Não</label>
-              </div>
-            </div>
-          </div>
-          <div className='f-row'>
-            <span className='w-100'>Tratamento psiquiátrico:</span>
-            <div className='f-row f-between'>
-              <div className='f-row g-4 f-align-center f-justify-end'>
-                <input type='radio' value={true} name='tratamentoPsiquiatrico' id='' onChange={handleInputChange} />
-                <label htmlFor=''>Sim</label>
-              </div>
-              <div className='f-row g-4 f-align-center f-justify-end'>
-                <input type='radio' value={false} name='tratamentoPsiquiatrico' id='' onChange={handleInputChange} />
-                <label htmlFor=''>Não</label>
-              </div>
-            </div>
-          </div>
-          <div className='f-row'>
-            <span className='w-100'>Quimioterapia:</span>
-            <div className='f-row f-between'>
-              <div className='f-row g-4 f-align-center f-justify-end'>
-                <input type='radio' value={true} name='quimioterapia' onChange={handleInputChange} />
-                <label htmlFor=''>Sim</label>
-              </div>
-              <div className='f-row g-4 f-align-center f-justify-end'>
-                <input type='radio' value={false} name='quimioterapia' onChange={handleInputChange} />
-                <label htmlFor=''>Não</label>
-              </div>
-            </div>
-          </div>
+          <InputRadio checked={form.fichaMedica.dorNoPeito} name='dorNoPeito' label='Dor no Peito:' onChange={handleInputChange} />
+          <InputRadio checked={form.fichaMedica.faltaAr} name='faltaAr' label='Falta de ar:' onChange={handleInputChange} />
+          <InputRadio checked={form.fichaMedica.pressaoAlta} name='pressaoAlta' label='Pressão alta:' onChange={handleInputChange} />
+          <InputRadio checked={form.fichaMedica.pressaoBaixa} name='pressaoBaixa' label='Pressão baixa:' onChange={handleInputChange} />
+          <InputRadio checked={form.fichaMedica.tratamentoRadioterapeutico} name='tratamentoRadioterapeutico' label='Tratamento radioterápico:' onChange={handleInputChange} />
+          <InputRadio checked={form.fichaMedica.tratamentoPsiquiatrico} name='tratamentoPsiquiatrico' label='Tratamento psiquiátrico:' onChange={handleInputChange} />
+          <InputRadio checked={form.fichaMedica.tratamentoPsiquiatrico} name='quimioterapia' label='Quimioterapia:' onChange={handleInputChange} />
         </div>
 
         <div className='f-column g-8'>
@@ -165,32 +84,10 @@ function FormInfoMedicas() {
             Você está usando?
             <div className='divider'></div>
           </div>
-          <div className='f-row'>
-            <span className='w-100'>Drogas ilícitas:</span>
-            <div className='f-row f-between'>
-              <div className='f-row g-4 f-align-center f-justify-end'>
-                <input type='radio' name='' id='' />
-                <label htmlFor=''>Sim</label>
-              </div>
-              <div className='f-row g-4 f-align-center f-justify-end'>
-                <input type='radio' name='' id='' />
-                <label htmlFor=''>Não</label>
-              </div>
-            </div>
-          </div>
-          <div className='f-row'>
-            <span className='w-100'>Medicamentos:</span>
-            <div className='f-row f-between'>
-              <div className='f-row g-4 f-align-center f-justify-end'>
-                <input type='radio' name='' id='' />
-                <label htmlFor=''>Sim</label>
-              </div>
-              <div className='f-row g-4 f-align-center f-justify-end'>
-                <input type='radio' name='' id='' />
-                <label htmlFor=''>Não</label>
-              </div>
-            </div>
-          </div>
+
+          <InputRadio checked={form.fichaMedica.drogas} name='drogas' label='Drogas ilícitas:' onChange={handleInputChange} />
+
+          <InputRadio checked={form.fichaMedica.medicamentos} name='medicamentos' label='Medicamentos:' onChange={handleInputChange} />
         </div>
 
         <div className='f-row g-8 f-justify-center'>
@@ -205,5 +102,23 @@ function FormInfoMedicas() {
     </>
   );
 }
+
+const InputRadio = ({ checked, onChange, name, label }) => {
+  return (
+    <div className='f-row'>
+      <span className='w-100'>{label}</span>
+      <div className='f-row f-between'>
+        <div className='f-row g-4 f-align-center f-justify-end'>
+          <input type='radio' value={true} checked={checked} name={name} onChange={onChange} />
+          <label htmlFor=''>Sim</label>
+        </div>
+        <div className='f-row g-4 f-align-center f-justify-end'>
+          <input type='radio' value={false} checked={!checked} name={name} onChange={onChange} />
+          <label htmlFor=''>Não</label>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 export default FormInfoMedicas;
