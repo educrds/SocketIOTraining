@@ -1,25 +1,28 @@
-import '../index.css';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { updatePatient } from '../redux';
+import ButtonGroup from '../components/ButtonGroup';
+import TitleWDivider from '../components/TitleWDivider';
+import InputRadio from '../components/InputRadio';
+import '../index.css';
 
 function FormInfoMedicas() {
   const navigate = useNavigate();
   const patientForm = useSelector(state => state.patient);
   const dispatch = useDispatch();
+
   const [form, setForm] = useState({
     fichaMedica: {
-      dorNoPeito: patientForm.fichaMedica?.dorNoPeito || null,
-      faltaAr: patientForm.fichaMedica?.faltaAr || null,
-      pressaoAlta: patientForm.fichaMedica?.pressaoAlta || null,
-      pressaoBaixa: patientForm.fichaMedica?.pressaoBaixa || null,
-      tratamentoRadioterapeutico: patientForm.fichaMedica?.tratamentoRadioterapeutico || null,
-      tratamentoPsiquiatrico: patientForm.fichaMedica?.tratamentoPsiquiatrico || null,
-      quimioterapia: patientForm.fichaMedica?.quimioterapia || null,
-      motivo: patientForm.fichaMedica?.motivo || null,
-      drogas: patientForm.fichaMedica?.drogas || null,
-      medicamentos: patientForm.fichaMedica?.medicamentos || null,
+      pressaoAlta: patientForm.fichaMedica?.pressaoAlta ?? null,
+      pressaoBaixa: patientForm.fichaMedica?.pressaoBaixa ?? null,
+      tratamentoPsiquiatrico: patientForm.fichaMedica?.tratamentoPsiquiatrico ?? null,
+      doencasCardiacas: patientForm.fichaMedica?.doencasCardiacas ?? null,
+      hipertensao: patientForm.fichaMedica?.hipertensao ?? null,
+      diabetes: patientForm.fichaMedica?.diabetes ?? null,
+      motivo: patientForm.fichaMedica?.motivo ?? null,
+      drogas: patientForm.fichaMedica?.drogas ?? null,
+      medicamentos: patientForm.fichaMedica?.medicamentos ?? null,
     },
   });
 
@@ -60,18 +63,13 @@ function FormInfoMedicas() {
         </div>
 
         <div className='f-column g-16'>
-          <div className='f-title'>
-            Você já tem ou teve?
-            <div className='divider'></div>
-          </div>
-
-          <InputRadio checked={form.fichaMedica.dorNoPeito} name='dorNoPeito' label='Dor no Peito:' onChange={handleInputChange} />
-          <InputRadio checked={form.fichaMedica.faltaAr} name='faltaAr' label='Falta de ar:' onChange={handleInputChange} />
+          <TitleWDivider title='Você tem ou teve?' />
           <InputRadio checked={form.fichaMedica.pressaoAlta} name='pressaoAlta' label='Pressão alta:' onChange={handleInputChange} />
           <InputRadio checked={form.fichaMedica.pressaoBaixa} name='pressaoBaixa' label='Pressão baixa:' onChange={handleInputChange} />
-          <InputRadio checked={form.fichaMedica.tratamentoRadioterapeutico} name='tratamentoRadioterapeutico' label='Tratamento radioterápico:' onChange={handleInputChange} />
+          <InputRadio checked={form.fichaMedica.doencasCardiacas} name='doencasCardiacas' label='Doenças Cardíacas:' onChange={handleInputChange} />
           <InputRadio checked={form.fichaMedica.tratamentoPsiquiatrico} name='tratamentoPsiquiatrico' label='Tratamento psiquiátrico:' onChange={handleInputChange} />
-          <InputRadio checked={form.fichaMedica.tratamentoPsiquiatrico} name='quimioterapia' label='Quimioterapia:' onChange={handleInputChange} />
+          <InputRadio checked={form.fichaMedica.hipertensao} name='hipertensao' label='Hipertensão:' onChange={handleInputChange} />
+          <InputRadio checked={form.fichaMedica.diabetes} name='diabetes' label='Diabetes:' onChange={handleInputChange} />
         </div>
 
         <div className='f-column g-8'>
@@ -80,45 +78,15 @@ function FormInfoMedicas() {
         </div>
 
         <div className='f-column g-16'>
-          <div className='f-title'>
-            Você está usando?
-            <div className='divider'></div>
-          </div>
-
+          <TitleWDivider title='Você está usando?' />
           <InputRadio checked={form.fichaMedica.drogas} name='drogas' label='Drogas ilícitas:' onChange={handleInputChange} />
-
           <InputRadio checked={form.fichaMedica.medicamentos} name='medicamentos' label='Medicamentos:' onChange={handleInputChange} />
         </div>
 
-        <div className='f-row g-8 f-justify-center'>
-          <button className='btn-default btn-ghost' onClick={() => navigate('/info-pessoais')}>
-            Voltar
-          </button>
-          <button className='btn-default btn-primary' onClick={handleSubmit}>
-            Próximo<i className='fa-solid fa-arrow-right'></i>
-          </button>
-        </div>
+        <ButtonGroup onClickBack={() => navigate('/info-pessoais')} onClickNext={handleSubmit} />
       </div>
     </>
   );
 }
-
-const InputRadio = ({ checked, onChange, name, label }) => {
-  return (
-    <div className='f-row'>
-      <span className='w-100'>{label}</span>
-      <div className='f-row f-between'>
-        <div className='f-row g-4 f-align-center f-justify-end'>
-          <input type='radio' value={true} checked={checked} name={name} onChange={onChange} />
-          <label htmlFor=''>Sim</label>
-        </div>
-        <div className='f-row g-4 f-align-center f-justify-end'>
-          <input type='radio' value={false} checked={!checked} name={name} onChange={onChange} />
-          <label htmlFor=''>Não</label>
-        </div>
-      </div>
-    </div>
-  );
-};
 
 export default FormInfoMedicas;

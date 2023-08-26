@@ -1,15 +1,16 @@
 import '../index.css';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { updatePatient } from '../redux';
 
 function FormTermoAceite() {
   const navigate = useNavigate();
+  const patientForm = useSelector(state => state.patient);
   const dispatch = useDispatch();
 
   const [form, setForm] = useState({
-    termoAceito: false,
+    termoAceito: patientForm?.termoAceito || false,
   });
 
   const handleInputChange = event => {
@@ -17,7 +18,7 @@ function FormTermoAceite() {
 
     setForm(prevForm => ({
       ...prevForm,
-      [name]: value,
+      [name]: !!value,
     }));
   };
 
@@ -44,7 +45,7 @@ function FormTermoAceite() {
             publicação em livros e revistas e outras atividades científicas, tanto no país como no exterior, respeitada toda a lesgilação vigente em relação ao assunto.
           </div>
           <div className='f-row g-4 f-align-center'>
-            <input type='radio' value={true} name='termoAceito' onChange={handleInputChange} />
+            <input type='radio' value={true} checked={form.termoAceito} name='termoAceito' onChange={handleInputChange} />
             <label htmlFor=''>Declaro que li e aceito os termos citados.</label>
           </div>
         </div>
