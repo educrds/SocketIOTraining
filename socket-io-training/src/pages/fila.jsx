@@ -1,9 +1,10 @@
 import '../index.css';
-import io from 'socket.io-client';
+// import io from 'socket.io-client';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import moment from 'moment';
 import 'moment/locale/pt-br';
+import { list_fila_today } from '../../../server/db/queries/queries';
 
 // const socket = io.connect('http://localhost:3001');
 // const db = 'http://localhost:5000/execute-query';
@@ -15,8 +16,7 @@ function Fila() {
     try {
       const { data } = await axios.get('http://localhost:5000/execute-query', {
         params: {
-          query:
-            "SELECT * FROM tb_fila LEFT JOIN tb_paciente ON tb_paciente.id = tb_fila.paciente_id WHERE atendido IS false ORDER BY CASE WHEN prioridade = 'Preferencial' THEN 1 ELSE 2 END, data_entrada ASC;",
+          query: list_fila_today,
         },
       });
       setFila(data);

@@ -1,7 +1,8 @@
 const express = require('express');
 const app = express();
 const cors = require('cors');
-const pool = require('../models/db');
+const pool = require('../db/database');
+const { insert_patient_queue, insert_medical_form, insert_new_patient } = require('../db/queries/queries');
 
 // MIDDLEWARE
 app.use(cors());
@@ -9,7 +10,7 @@ app.use(express.json());
 
 // EXECUTE QUERY
 app.get('/execute-query', async (req, res) => {
-  const {query} = req.query;
+  const { query } = req.query;
   try {
     const result = await pool.query(query);
     res.json(result.rows);
@@ -44,8 +45,7 @@ const insertOrRetrieveAddress = async (pool, address) => {
 
 // INSERT || RETRIEVE MEDICAL FORM FROM BD
 const insertMedicalForm = async (pool, medicalForm, pacienteID) => {
-  const medicalFormQuery = `INSERT INTO tb_ficha_medica(paciente_id, motivo_consulta, pressa_alta, pressao_baixa, tratamento_psiquiatrico, doencas_cardiacas, hipertensao, diabetes, drogas, medicamentos )
-  VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)`;
+  const medicalFormQuery = insert_medical_form;
   const medicalFormValues = [
     pacienteID,
     medicalForm.motivo,
@@ -68,7 +68,7 @@ const insertMedicalForm = async (pool, medicalForm, pacienteID) => {
 // INSERIR PACIENTE NA FILA
 const insertQueue = async patientID => {
   try {
-    const insertQuery = `INSERT INTO tb_fila(paciente_id, prioridade) VALUES ($1, $2);`;
+    const insertQuery = insert_patient_queue;
     const values = [patientID, 'Preferencial'];
     await pool.query(insertQuery, values);
   } catch (error) {
@@ -82,10 +82,7 @@ app.post('/insert', async (req, res) => {
 
   try {
     const addressId = await insertOrRetrieveAddress(pool, patient.endereco);
-    const insertQuery = `
-      INSERT INTO tb_paciente(criado_em, nome, sobrenome, cpf, data_nascimento, idade, estado_civil_id, genero_id, pcd, telefone, email, termo_aceite, endereco_id)
-      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13) RETURNING *;
-    `;
+    const insertQuery = insert_new_patient;
 
     const values = [
       new Date(),
