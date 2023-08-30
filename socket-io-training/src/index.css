@@ -1,6 +1,5 @@
 body {
   width: 390px;
-  height: 845px;
   margin: auto;
   padding: 32px 24px;
   border: 1px solid #33333334;
@@ -152,6 +151,10 @@ label {
   padding: 8px 16px;
   cursor: pointer;
   border-radius: 8px;
+}
+.card-preferencial {
+  border-left: 5px solid #c73838;
+  border-radius: 5px 0 0 5px;
 }
 .card:hover {
   transform: scale(1.025);

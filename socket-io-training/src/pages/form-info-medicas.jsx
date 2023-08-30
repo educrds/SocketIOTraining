@@ -5,6 +5,7 @@ import { updatePatient } from '../redux';
 import ButtonGroup from '../components/ButtonGroup';
 import TitleWDivider from '../components/TitleWDivider';
 import InputRadio from '../components/InputRadio';
+import FormProgress from '../components/FormProgress';
 import '../index.css';
 
 function FormInfoMedicas() {
@@ -52,15 +53,7 @@ function FormInfoMedicas() {
   return (
     <>
       <div className='f-column g-16'>
-        <div className='f-column g-8 f-align-center'>
-          <div className='f-14 col-blue'>Informações médicas</div>
-          <div className='f-row g-8'>
-            <div className='progress-status-bar ok'></div>
-            <div className='progress-status-bar ok'></div>
-            <div className='progress-status-bar'></div>
-            <div className='progress-status-bar'></div>
-          </div>
-        </div>
+        <FormProgress currentStep={1} title='Informações Médicas' />
 
         <div className='f-column g-16'>
           <TitleWDivider title='Você tem ou teve?' />

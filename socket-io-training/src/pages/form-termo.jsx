@@ -3,6 +3,8 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { updatePatient } from '../redux';
+import axios from 'axios';
+import FormProgress from '../components/FormProgress';
 
 function FormTermoAceite() {
   const navigate = useNavigate();
@@ -22,22 +24,23 @@ function FormTermoAceite() {
     }));
   };
 
+  const executeInsert = async () => {
+    try {
+      await axios.post('http://localhost:5000/insert', { patient: patientForm });
+    } catch (error) {
+      console.error('Error executing query:', error);
+    }
+  };
+
   const handleSubmit = () => {
     dispatch(updatePatient(form));
+    executeInsert();
     navigate('/senha');
   };
   return (
     <>
       <div className='f-column g-16'>
-        <div className='f-column g-8 f-align-center'>
-          <div className='f-14 col-blue'>Termo de aceite</div>
-          <div className='f-row g-8'>
-            <div className='progress-status-bar ok'></div>
-            <div className='progress-status-bar ok'></div>
-            <div className='progress-status-bar ok'></div>
-            <div className='progress-status-bar'></div>
-          </div>
-        </div>
+        <FormProgress currentStep={2} title='Termo de Aceite' />
         <div className='f-column g-16'>
           <div>
             Declaro que autorizo, sem ônus, que o Curso de Odontologia da UNICEPLAC utilize informações e dados referentes ao meu caso, da mesma forma que autorizo o uso de tecidos e dentes removidos

@@ -8,6 +8,8 @@ import TitleWDivider from '../components/TitleWDivider';
 import ButtonGroup from '../components/ButtonGroup';
 import InputMask from 'react-input-mask';
 import axios from 'axios';
+import FormProgress from '../components/FormProgress';
+import InputRadio from '../components/InputRadio';
 
 function FormInfoPessoais() {
   const navigate = useNavigate();
@@ -16,16 +18,19 @@ function FormInfoPessoais() {
   const [estados, setEstados] = useState();
   const [form, setForm] = useState({
     nome: patientForm.nome || null,
+    sobrenome: patientForm.sobrenome || null,
     dataNascimento: patientForm.dataNascimento || null,
     idade: patientForm.idade || null,
     cpf: patientForm.cpf || null,
     telefone: patientForm.telefone || null,
+    email: patientForm.email || null,
+    pcd: patientForm.pcd ?? null,
     estadoCivil: patientForm.estadoCivil || null,
     genero: patientForm.genero ?? null,
     endereco: {
       cep: patientForm.endereco?.cep ?? null,
       estado: patientForm.endereco?.estado ?? null,
-      endereco: patientForm.endereco?.endereco ?? null,
+      bairro: patientForm.bairro?.bairro ?? null,
       logradouro: patientForm.endereco?.logradouro ?? null,
       cidade: patientForm.endereco?.cidade ?? null,
     },
@@ -36,6 +41,12 @@ function FormInfoPessoais() {
 
     if (!isNaN(value)) {
       value = parseInt(value, 10);
+    }
+
+    if (value === 'true') {
+      value = true;
+    } else if (value === 'false') {
+      value = false;
     }
 
     setForm(prevForm => ({
@@ -95,7 +106,7 @@ function FormInfoPessoais() {
         endereco: {
           ...prevForm.endereco,
           estado: data.uf,
-          endereco: data.bairro,
+          bairro: data.bairro,
           logradouro: data.logradouro,
           cidade: data.localidade,
         },
@@ -108,19 +119,17 @@ function FormInfoPessoais() {
   return (
     <>
       <div className='f-column g-16'>
-        <div className='f-column g-8 f-align-center'>
-          <div className='f-14 col-blue'>Informações pessoais</div>
-          <div className='f-row g-8'>
-            <div className='progress-status-bar ok'></div>
-            <div className='progress-status-bar'></div>
-            <div className='progress-status-bar'></div>
-            <div className='progress-status-bar'></div>
-          </div>
-        </div>
+        <FormProgress currentStep={0} title='Informações Pessoais' />
 
-        <div className='f-column'>
-          <label htmlFor=''>Nome completo:</label>
-          <input placeholder='Insira seu nome...' onChange={handleInputChange} value={form.nome} name='nome' />
+        <div className='f-row g-16'>
+          <div className='f-column'>
+            <label htmlFor=''>Nome:</label>
+            <input placeholder='Insira seu nome...' onChange={handleInputChange} value={form.nome} name='nome' />
+          </div>
+          <div className='f-column'>
+            <label htmlFor=''>Sobrenome:</label>
+            <input placeholder='Insira seu sobrenome...' onChange={handleInputChange} value={form.sobrenome} name='sobrenome' />
+          </div>
         </div>
 
         <div className='f-row g-16'>
@@ -143,6 +152,13 @@ function FormInfoPessoais() {
 
         <div className='f-row g-16'>
           <div className='f-column'>
+            <label htmlFor=''>Email:</label>
+            <input placeholder='Insira seu email' onChange={handleInputChange} value={form.email} name='email' />
+          </div>
+        </div>
+
+        <div className='f-row g-16'>
+          <div className='f-column'>
             <label htmlFor=''>Estado civil:</label>
             <select name='estadoCivil' id='' onChange={handleInputChange}>
               <option>Selecione o estado civil</option>
@@ -152,7 +168,26 @@ function FormInfoPessoais() {
               <option value={2} selected={form.estadoCivil === 2}>
                 Casado
               </option>
+              <option value={3} selected={form.estadoCivil === 3}>
+                Outros
+              </option>
             </select>
+          </div>
+        </div>
+
+        <div className='f-row g-16'>
+          <div className='f-column g-8'>
+            <label htmlFor=''>PCD:</label>
+            <div className='f-row g-4 f-align-center'>
+              <div className='f-row g-4 f-align-center'>
+                <input type='radio' name='pcd' id='' value={true} checked={form.pcd === true} onChange={handleInputChange} />
+                <label htmlFor=''>Sim</label>
+              </div>
+              <div className='f-row g-4 f-align-center'>
+                <input type='radio' name='pcd' id='' value={false} checked={form.pcd === false} onChange={handleInputChange} />
+                <label htmlFor=''>Não</label>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -163,19 +198,19 @@ function FormInfoPessoais() {
             <div className='f-row g-16'>
               <div className='f-row g-16'>
                 <div className='f-row g-4 f-align-center'>
-                  <input type='radio' name='genero' id='' value={0} checked={form.genero == 0} onChange={handleInputChange} />
+                  <input type='radio' name='genero' id='' value={1} checked={form.genero == 1} onChange={handleInputChange} />
                   <label htmlFor=''>Masculino</label>
                 </div>
               </div>
               <div className='f-row g-16'>
                 <div className='f-row g-4 f-align-center'>
-                  <input type='radio' name='genero' id='' value={1} checked={form.genero == 1} onChange={handleInputChange} />
+                  <input type='radio' name='genero' id='' value={2} checked={form.genero == 2} onChange={handleInputChange} />
                   <label htmlFor=''>Feminino</label>
                 </div>
               </div>
               <div className='f-row g-16'>
                 <div className='f-row g-4 f-align-center'>
-                  <input type='radio' name='genero' id='' value={2} checked={form.genero == 2} onChange={handleInputChange} />
+                  <input type='radio' name='genero' id='' value={3} checked={form.genero == 3} onChange={handleInputChange} />
                   <label htmlFor=''>Outros</label>
                 </div>
               </div>
@@ -206,8 +241,8 @@ function FormInfoPessoais() {
         </div>
 
         <div className='f-column'>
-          <label htmlFor=''>Endereço:</label>
-          <input placeholder='Insira seu endereço...' onChange={handleEnderecoChange} value={form.endereco.endereco} name='endereco' />
+          <label htmlFor=''>Bairro:</label>
+          <input placeholder='Insira seu bairro...' onChange={handleEnderecoChange} value={form.endereco.bairro} name='bairro' />
         </div>
 
         <div className='f-column'>

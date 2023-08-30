@@ -1,18 +1,12 @@
+import FormProgress from '../components/FormProgress';
 import '../index.css';
 
 function FormSenha() {
   return (
     <>
       <div className='f-column g-16'>
-        <div className='f-column g-8 f-align-center'>
-          <div className='f-14 col-blue'>Senha</div>
-          <div className='f-row g-8'>
-            <div className='progress-status-bar ok'></div>
-            <div className='progress-status-bar ok'></div>
-            <div className='progress-status-bar ok'></div>
-            <div className='progress-status-bar ok'></div>
-          </div>
-        </div>
+        <FormProgress currentStep={3} title='Senha' />
+
         <div className='f-column g-16 h-100 f-align-center'>
           <div className='f-100px col-blue'>523</div>
 
