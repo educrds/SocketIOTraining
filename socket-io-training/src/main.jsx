@@ -7,6 +7,7 @@ import FormTermoAceite from './pages/form-termo.jsx';
 import FormSenha from './pages/senha.jsx';
 import { Provider } from 'react-redux';
 import store from './redux/store.js';
+import Paciente from './pages/paciente.jsx';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <BrowserRouter>
@@ -16,6 +17,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
         <Route path='/info-medicas' element={<FormInfoMedicas />}></Route>
         <Route path='/termo-aceite' element={<FormTermoAceite />}></Route>
         <Route path='/senha' element={<FormSenha />}></Route>
+        <Route path='/paciente' element={<Paciente />}></Route>
 
         <Route path='/fila' element={<Fila />}></Route>
       </Routes>

@@ -1,1 +1,2 @@
 export const UPDATE_PATIENT = 'UPDATE_PATIENT';
+export const GET_PATIENT = 'GET_PATIENT';

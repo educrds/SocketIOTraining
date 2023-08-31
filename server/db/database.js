@@ -9,6 +9,3 @@ const pool = new Pool({
 });
 
 module.exports = pool;
-
-// pool.query('SELECT * FROM tb_genero').then(res => console.log(res.rows));
-// pool.end();

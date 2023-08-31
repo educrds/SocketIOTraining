@@ -37,13 +37,15 @@ input[type='radio'] {
   border-radius: 4px;
   accent-color: #0077b6;
 }
+input:disabled {
+  background-color: #e9ecef;
+  opacity: 1;
+}
 input,
 select {
   height: 32px;
 }
-input:disabled {
-  background-color: rgba(153, 153, 153, 0.288);
-}
+
 label {
   color: rgba(39, 76, 119, 0.8);
   font-size: 14px;
@@ -57,6 +59,9 @@ label {
 .f-row {
   display: flex;
   width: 100%;
+}
+.f-wrap {
+  flex-wrap: wrap;
 }
 .f-align-center {
   align-items: center;
@@ -125,6 +130,10 @@ label {
   height: 1px;
   background: #0077b6;
 }
+.divider-gray {
+  height: 1px;
+  background: #c0c0c0;
+}
 .btn-default {
   display: flex;
   cursor: pointer;
@@ -164,6 +173,17 @@ label {
   color: #989b9e;
   font-weight: 500;
 }
+.card-ficha-medica {
+  width: fit-content;
+  padding: 8px 16px;
+  height: 50px;
+  border-radius: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #edf3fc;
+  color: #464646;
+}
 .badge {
   padding: 4px 8px;
   height: 24px;
@@ -177,6 +197,10 @@ label {
 .badge-idade {
   color: #464646;
   background-color: #e6e6e6;
+}
+.badge-phone {
+  color: #079d02;
+  background-color: #f1ffee;
 }
 .badge-preferencial {
   color: #9d0208;
@@ -195,6 +219,12 @@ label {
 .col-blue {
   color: #0077b6;
 }
+.col-gray {
+  color: #464646;
+}
+.col-light-gray {
+  color: #999999;
+}
 .square {
   border-radius: 15px;
   background: #fff;
@@ -205,4 +235,7 @@ label {
   align-items: center;
   justify-content: center;
   padding: 8px 16px;
+}
+.c-pointer {
+  cursor: pointer;
 }
