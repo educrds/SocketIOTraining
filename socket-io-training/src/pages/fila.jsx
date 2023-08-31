@@ -63,7 +63,7 @@ function Fila() {
                     <div className='card-title'>
                       {paciente.nome} {paciente.sobrenome}
                     </div>
-                    <span className='badge badge-idade'>{paciente.idade}</span>
+                    <span className='badge badge-gray'>{paciente.idade}</span>
                   </div>
 
                   <div className='f-row f-align-center f-justify-end g-4'>

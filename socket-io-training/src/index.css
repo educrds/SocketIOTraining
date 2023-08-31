@@ -154,6 +154,16 @@ label {
   background: none;
   color: #989b9e;
 }
+.btn-success {
+  background-color: #157347;
+  color: #fff;
+}
+.btn-success:hover {
+  color: #fff;
+  background-color: #157347;
+  border-color: #146c43;
+}
+
 .card {
   background-color: #fff;
   box-shadow: 0px 2px 16px 0px rgba(0, 0, 0, 0.1);
@@ -185,7 +195,7 @@ label {
   color: #464646;
 }
 .badge {
-  padding: 4px 8px;
+  padding: 6px 12px;
   height: 24px;
   width: fit-content;
   border-radius: 12px;
@@ -194,7 +204,7 @@ label {
   align-items: center;
   justify-content: center;
 }
-.badge-idade {
+.badge-gray {
   color: #464646;
   background-color: #e6e6e6;
 }

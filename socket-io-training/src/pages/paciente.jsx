@@ -1,11 +1,25 @@
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const Paciente = () => {
   const navigate = useNavigate();
   const patientByID = useSelector(state => state.patientByID);
-  const [patientData, setPatientData] = useState(patientByID);
+  const [patientData] = useState(patientByID);
+
+  const attendPatients = async patientID => {
+    try {
+      await axios.get('http://localhost:5000/execute-query', {
+        params: {
+          query: `UPDATE tb_fila SET atendido = TRUE WHERE paciente_id = ${patientID};`,
+        },
+      });
+      navigate('/fila');
+    } catch (error) {
+      console.error('Error executing query:', error);
+    }
+  };
 
   return (
     <div className='f-column g-16'>
@@ -20,11 +34,12 @@ const Paciente = () => {
         <div className='f-20 col-gray'>
           {patientData.nome} {patientData.sobrenome}
         </div>
-        <div className='f-row g-8'>
-          <div className='badge badge-idade'>{patientData.idade} anos</div>
+        <div className='f-row g-8 f-wrap'>
+          <div className='badge badge-gray'>{patientData.idade} anos</div>
           {patientData.prioridade === 'Preferencial' && <div className='badge badge-preferencial'>Preferencial</div>}
           {patientData.pcd && <div className='badge badge-preferencial'>PCD</div>}
           <div className='badge badge-phone'>{patientData.telefone}</div>
+          <div className='badge badge-gray'>{patientData.email}</div>
         </div>
       </div>
 
@@ -93,6 +108,11 @@ const Paciente = () => {
           </div>
         </div>
       )}
+      <div className='ml-auto'>
+        <button className='btn-default btn-success' onClick={() => attendPatients(patientData.paciente_id)}>
+          <i class='fa-solid fa-hand-holding-medical'></i>Atender
+        </button>
+      </div>
     </div>
   );
 };
